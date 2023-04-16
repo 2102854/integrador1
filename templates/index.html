@@ -1,5 +1,59 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} Projeto integrador 1 {% endblock %}</h1>
+    <h1 class="display-4 fw-normal d-flex justify-content-center"><small class="text-body-secondary fw-light">Sistema Gerenciador de Transporte de Pacientes</small></h1>
+
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <h4 class="my-0 fw-normal">Hospitais Cadastrados</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">{{hospitais}}</h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        {% for hospital in lt_hospitais %}
+                        <li>{{hospital.nome}}</li>
+                        {% endfor %} 
+                    </ul>
+                    <button type="button" class="w-100 btn btn-lg btn-outline-primary">Lista de Hospitais</button>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <h4 class="my-0 fw-normal">Pacientes Cadastrados</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">{{pacientes}}</h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        {% for paciente in lt_pacientes %}
+                        <li>{{paciente.nome}}</li>
+                        {% endfor %} 
+                    </ul>
+                    <button type="button" class="w-100 btn btn-lg btn-outline-primary">Lista de Pacientes</button>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <h4 class="my-0 fw-normal">Agendamentos</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">{{agendamentos}}</h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>Atendimento 1</li>
+                        <li>Atendimento 2</li>
+                        <li>Atendimento 3</li>
+                        <li>Atendimento 4</li>
+                    </ul>
+                    <button type="button" class="w-100 btn btn-lg btn-outline-primary">Lista de Agendamento</button>
+                </div>
+            </div>
+        </div>
+      </div>
+
+
 {% endblock %}
