@@ -1,17 +1,16 @@
 # Projeto integrador 1
 # Titulo do projeto
 # Grupo 5
-#
-#
 
 # Referencias
 import locale
-from flask import Flask, render_template, url_for, flash, redirect, request, Request
-from sqlalchemy import  Column, create_engine, ForeignKey, func
+from flask import Flask, render_template, url_for, flash, redirect, request
+from sqlalchemy import  Column, create_engine, func
 from sqlalchemy import select
-from sqlalchemy.orm import relationship, mapped_column, joinedload, subqueryload, Session
+from sqlalchemy.orm import Session
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.sqlite import (BLOB, BOOLEAN, CHAR, DATE, DATETIME, DECIMAL, FLOAT, INTEGER, NUMERIC, JSON, SMALLINT, TEXT, TIME, TIMESTAMP, VARCHAR)
+from sqlalchemy.sql.operators import ilike_op
 
 locale.setlocale( locale.LC_ALL,'pt_BR.UTF-8' )
 
@@ -351,8 +350,14 @@ def cidades():
 
 #Abre a página de pacientes
 @app.route("/pacientes")
-def pacientes():    
-    sql = session.query(Paciente, Cidade).join(Cidade, Paciente.cidade_id == Cidade.cidade_id).all()
+def pacientes():
+    #http://127.0.0.1:5000/pacientes?nome=rosa
+    nome = request.args.get('nome', default = '', type = str)
+    print(nome)
+    if nome == '':    
+        sql = session.query(Paciente, Cidade).join(Cidade, Paciente.cidade_id == Cidade.cidade_id).all()        
+    else:
+        sql = session.query(Paciente, Cidade).filter(ilike_op(Paciente.nome,f'%{nome}%')).join(Cidade, Paciente.cidade_id == Cidade.cidade_id).all()
     return render_template('pacientes.html', results=sql)
 
 #Abre a página de cadastro de pacientes
@@ -378,3 +383,30 @@ def pacientes_add():
     else:
         cidades = session.query(Cidade).all()
         return render_template('form_cad_paciente.html', cidades=cidades)
+    
+#Abre a página de edição de pacientes
+@app.route('/pacientes/editar/<paciente_id>', methods=('GET', 'POST'))
+def pacientes_edit(paciente_id):
+    if request.method == 'POST':      
+        sql = select(Paciente).where(Paciente.paciente_id == paciente_id)
+        paciente = session.scalars(sql).one()
+
+        paciente.cidade_id = request.form['cidade']
+        paciente.nome = request.form['nome'].upper()
+        paciente.data_nasc = request.form['data_nasc'] 
+        paciente.tel_1 = request.form['tel_1']
+        paciente.tel_2 = request.form['tel_2'] 
+        paciente.logradouro = request.form['logradouro'].upper() 
+        paciente.numero = request.form['numero']
+        paciente.complemento = request.form['complemento'].upper()
+        paciente.cep = request.form['cep']     
+        session.commit()
+
+        return redirect(url_for('pacientes'))    
+    
+    else:
+        cidades = session.query(Cidade).all()
+        sql = select(Paciente).where(Paciente.paciente_id == paciente_id)
+        paciente = session.scalars(sql).one()
+        return render_template('form_edit_paciente.html', cidades=cidades, paciente = paciente)
+    
