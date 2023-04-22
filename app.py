@@ -23,6 +23,7 @@ session = Session(engine)
 
 # Configuração da aplicação
 app = Flask(__name__)
+app.debug = True
 
 #############################
 # Classes do banco de dados #
@@ -123,22 +124,29 @@ class Paciente (Base):
     __tablename__ = "PACIENTE"
 
     paciente_id = Column(INTEGER, primary_key=True)
-    endereco_id = Column(INTEGER, nullable=False)
+    cidade_id = Column(INTEGER, nullable=False)
     nome = Column(TEXT(250), nullable=False)
     data_nasc = Column(TEXT(10), nullable=False)
     tel_1 = Column(TEXT(11), nullable=False)
     tel_2 = Column(TEXT(11), nullable=True)
+    logradouro = Column(TEXT(400), nullable=False)
+    numero = Column(TEXT(20), nullable=False)
+    complemento = Column(TEXT(50), nullable=False)
+    cep = Column(TEXT(10), nullable=False)
 
     def __repr__(self) -> str:
-        return f"Paciente(paciente_id={self.paciente_id!r},endereco_id={self.endereco_id!r},nome={self.nome!r},data_nasc={self.data_nasc!r},tel_1={self.tel_1!r},tel_2={self.tel_2!r})"
-        #return f"Paciente(paciente_id={self.paciente_id!r},endereco_id={self.endereco_id!r},nome={self.nome!r},tel_1={self.tel_1!r},tel_2={self.tel_2!r})"
+        return f"Paciente(paciente_id={self.paciente_id!r},cidade_id={self.cidade_id!r},nome={self.nome!r},data_nasc={self.data_nasc!r},tel_1={self.tel_1!r},tel_2={self.tel_2!r},logradouro={self.logradouro!r}, numero={self.numero!r}, complemento={self.complemento!r}, cep={self.cep!r})"
     
-    def __init__(self, endereco_id, nome, data_nasc, tel_1, tel_2):
-        self.endereco_id = endereco_id
+    def __init__(self, cidade_id, nome, data_nasc, tel_1, tel_2, logradouro, numero, complemento, cep):
+        self.cidade_id = cidade_id
         self.nome = nome 
         self.data_nasc = data_nasc
         self.tel_1 = tel_1
         self.tel_2 = tel_2
+        self.logradouro = logradouro
+        self.numero = numero
+        self.complemento = complemento
+        self.cep = cep
 
 class Tipo_Responsavel (Base):
     __tablename__ = "TIPO_RESPONSAVEL"
@@ -248,11 +256,44 @@ def index():
     num_pacientes = session.query(func.count(Paciente.paciente_id)).scalar()
     num_agendamentos = session.query(func.count(Agendamento.agendamento_id)).scalar()
 
-    sql = select(Hospital)
-    lt_hospitais = session.scalars(sql)
+    #Carrega a lista de hospitais 
+    #No máximo 4 nomes
+    sql = select(Hospital).order_by(Hospital.hospital_id.desc())
+    hospitais = session.scalars(sql)
 
-    sql = select(Paciente)
-    lt_pacientes = session.scalars(sql)    
+    lt_hospitais = []
+    num_hos = 0
+
+    for hospital in hospitais:
+        num_hos = num_hos + 1
+        
+        lt_hospitais.append(hospital.nome)
+        if num_hos > 3:
+            break
+
+    if num_hos < 4:
+        for x in range(4 - num_hos):
+            lt_hospitais.append("..")    
+
+    #Carrega a lista de pacientes 
+    #No máximo 4 nomes
+
+    sql = select(Paciente).order_by(Paciente.paciente_id.desc())
+    pacientes = session.scalars(sql)   
+    
+    lt_pacientes = []
+    num_pac = 0
+    
+    for paciente in pacientes:
+        num_pac = num_pac + 1
+        
+        lt_pacientes.append(paciente.nome)
+        if num_pac > 3:
+            break
+
+    if num_pac < 4:
+        for x in range(4 - num_pac):
+            lt_pacientes.append("..")
 
     return render_template('index.html', hospitais=num_hospitais, pacientes=num_pacientes, agendamentos=num_agendamentos, lt_hospitais=lt_hospitais, lt_pacientes=lt_pacientes)
 
@@ -311,6 +352,29 @@ def cidades():
 #Abre a página de pacientes
 @app.route("/pacientes")
 def pacientes():    
-    sql = session.query(Paciente, Endereco).join(Endereco, Paciente.endereco_id == Endereco.endereco_id).all()
-    print(sql)
+    sql = session.query(Paciente, Cidade).join(Cidade, Paciente.cidade_id == Cidade.cidade_id).all()
     return render_template('pacientes.html', results=sql)
+
+#Abre a página de cadastro de pacientes
+@app.route('/pacientes/novo/', methods=('GET', 'POST'))
+def pacientes_add():
+    if request.method == 'POST':      
+        
+        novoPaciente = Paciente (
+            request.form['cidade'], 
+            request.form['nome'].upper(), 
+            request.form['data_nasc'], 
+            request.form['tel_1'], 
+            request.form['tel_2'], 
+            request.form['logradouro'].upper(), 
+            request.form['numero'], 
+            request.form['complemento'].upper(), 
+            request.form['cep']
+        )
+        session.add(novoPaciente)        
+        session.commit()        
+        return redirect(url_for('pacientes'))    
+    
+    else:
+        cidades = session.query(Cidade).all()
+        return render_template('form_cad_paciente.html', cidades=cidades)

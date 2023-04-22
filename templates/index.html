@@ -13,7 +13,7 @@
                     <h1 class="card-title pricing-card-title">{{hospitais}}</h1>
                     <ul class="list-unstyled mt-3 mb-4">
                         {% for hospital in lt_hospitais %}
-                        <li>{{hospital.nome}}</li>
+                        <li>{{hospital}}</li>
                         {% endfor %} 
                     </ul>
                     <button type="button" class="w-100 btn btn-lg btn-outline-primary">Lista de Hospitais</button>
@@ -29,10 +29,15 @@
                     <h1 class="card-title pricing-card-title">{{pacientes}}</h1>
                     <ul class="list-unstyled mt-3 mb-4">
                         {% for paciente in lt_pacientes %}
-                        <li>{{paciente.nome}}</li>
+                        <li>{{paciente}}</li>
                         {% endfor %} 
                     </ul>
-                    <button type="button" class="w-100 btn btn-lg btn-outline-primary">Lista de Pacientes</button>
+                    <!--<button type="button" class="w-100 btn btn-lg btn-outline-primary">Lista de Pacientes</button>-->
+                    <div class="col-12">
+                        <a class="w-100 btn btn-lg btn-outline-primary" href="/pacientes">
+                            Lista de Pacientes
+                        </a>                            
+                    </div>                    
                 </div>
             </div>
         </div>
