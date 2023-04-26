@@ -199,3 +199,12 @@ def pacientes_edit(paciente_id):
         paciente = session.scalars(sql).one()
         return render_template('form_edit_paciente.html', cidades=cidades, paciente = paciente)
     
+    #Abre a página de pacientes
+@app.route("/agendamentos")
+def agendamentos():
+    nome = request.args.get('nome', default = '', type = str)
+    #if nome == '':    
+    sql = session.query(Agendamento, Paciente ).join(Paciente, Agendamento.paciente_id == Paciente.paciente_id).all()        
+    #else:
+    #    sql = session.query(Paciente, Cidade).filter(ilike_op(Paciente.nome,f'%{nome}%')).join(Cidade, Paciente.cidade_id == Cidade.cidade_id).all()
+    return render_template('agendamentos.html', results=sql)
