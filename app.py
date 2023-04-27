@@ -6,10 +6,17 @@
 import locale
 from models import Pais, Estado, Cidade, Endereco, Veiculo, Hospital, Paciente, Tipo_Responsavel, Responsavel, Tipo_Doenca, Tipo_Encaminhamento, Tipo_Remocao, Agendamento, Agendamento_Responsavel
 from flask import Flask, render_template, url_for, flash, redirect, request
+from flask import jsonify
 from sqlalchemy import create_engine, func
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.operators import ilike_op
+
+
+# Cria o dicionário da Classe para retorno json
+def dict_helper(objlist):
+    result = [item.obj_to_dict() for item in objlist]
+    return result
 
 locale.setlocale( locale.LC_ALL,'pt_BR.UTF-8' )
 
@@ -149,13 +156,22 @@ def pacientes():
         sql = session.query(Paciente, Cidade).filter(ilike_op(Paciente.nome,f'%{nome}%')).join(Cidade, Paciente.cidade_id == Cidade.cidade_id).all()
     return render_template('pacientes.html', results=sql)
 
+#https://medium.com/@mhd0416/flask-sqlalchemy-object-to-json-84c515d3c11c
+# Retorna a lista de pacientes em formato json
+@app.route("/pacientes/lst")
+def getPacientes():
+    sql = session.query(Paciente).all()
+    p = dict_helper(sql) 
+    return jsonify(pacientes = p)
+
 #Abre a página de cadastro de pacientes
 @app.route('/pacientes/novo/', methods=('GET', 'POST'))
 def pacientes_add():
     if request.method == 'POST':      
         
         novoPaciente = Paciente (
-            request.form['cidade'], 
+            request.form['cidade'],
+            request.form['hygia'],
             request.form['nome'].upper(), 
             request.form['data_nasc'], 
             request.form['tel_1'], 
@@ -181,6 +197,7 @@ def pacientes_edit(paciente_id):
         paciente = session.scalars(sql).one()
 
         paciente.cidade_id = request.form['cidade']
+        paciente.hygia = request.form['hygia']
         paciente.nome = request.form['nome'].upper()
         paciente.data_nasc = request.form['data_nasc'] 
         paciente.tel_1 = request.form['tel_1']
@@ -208,3 +225,31 @@ def agendamentos():
     #else:
     #    sql = session.query(Paciente, Cidade).filter(ilike_op(Paciente.nome,f'%{nome}%')).join(Cidade, Paciente.cidade_id == Cidade.cidade_id).all()
     return render_template('agendamentos.html', results=sql)
+
+#Abre a página de agendamento de pacientes
+@app.route('/agendamentos/novo/', methods=('GET', 'POST'))
+def agendamentos_add():
+    if request.method == 'POST':      
+        
+        novoPaciente = Paciente (
+            request.form['cidade'],
+            request.form['hygia'],
+            request.form['nome'].upper(), 
+            request.form['data_nasc'], 
+            request.form['tel_1'], 
+            request.form['tel_2'], 
+            request.form['logradouro'].upper(), 
+            request.form['numero'], 
+            request.form['complemento'].upper(), 
+            request.form['cep']
+        )
+        session.add(novoPaciente)        
+        session.commit()        
+        return redirect(url_for('pacientes'))    
+    
+    else:
+        cidades = session.query(Cidade).all()
+        return render_template('form_cad_agendamento.html', cidades=cidades)
+    
+
+#https://bootstrap-table.com/

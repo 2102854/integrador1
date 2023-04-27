@@ -16,10 +16,16 @@
     </nav>
     <form class="needs-validation" novalidate method="post" action="/pacientes/editar/{{paciente.paciente_id}}" >
         <div class="form-row">
-            <div class="col-md-4 mb-3">
-                <label for="pais_id">Identificador do Paciente</label>
-                <input type="text" class="form-control" id="paciente_id" name="paciente_id" placeholder="Identidicador do paciente" value="{{ paciente.paciente_id }}" maxlength="250" minlength="3" disabled required>
-            </div>   
+            <div class="col-md-11 mb-1">
+                <div class="col-md-4 mb-2 slide">
+                    <label for="pais_id">Identificador do Paciente</label>
+                    <input type="text" class="form-control" id="paciente_id" name="paciente_id" placeholder="Identidicador do paciente" value="{{ paciente.paciente_id }}" maxlength="250" minlength="3" disabled required>
+                </div>   
+                <div class="col-md-4 mb-2 slide">
+                    <label for="pais_id">Hygia</label>
+                    <input type="text" class="form-control" id="hygia" name="hygia" placeholder="Hygia" value="{{ paciente.hygia }}" maxlength="20" minlength="3" required>
+                </div>   
+            </div>
             <div class="col-md-11 mb-3">
                 <div class="col-md-8 slide">
                     <label for="nome">Nome do paciente</label>
@@ -83,9 +89,7 @@
                 </div>
                 <div class="invalid-feedback">
                     Cidade inválida.
-                </div>   
-
-                  
+                </div>                    
             </div>            
             <div class="col-md-12 mb-3">
                 <div class="slide col-md-8">

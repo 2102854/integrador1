@@ -104,6 +104,7 @@ class Paciente (Base):
 
     paciente_id = Column(INTEGER, primary_key=True)
     cidade_id = Column(INTEGER, nullable=False)
+    hygia = Column(TEXT(20),nullable=False)
     nome = Column(TEXT(250), nullable=False)
     data_nasc = Column(TEXT(10), nullable=False)
     tel_1 = Column(TEXT(11), nullable=False)
@@ -114,10 +115,11 @@ class Paciente (Base):
     cep = Column(TEXT(10), nullable=False)
 
     def __repr__(self) -> str:
-        return f"Paciente(paciente_id={self.paciente_id!r},cidade_id={self.cidade_id!r},nome={self.nome!r},data_nasc={self.data_nasc!r},tel_1={self.tel_1!r},tel_2={self.tel_2!r},logradouro={self.logradouro!r}, numero={self.numero!r}, complemento={self.complemento!r}, cep={self.cep!r})"
+        return f"Paciente(paciente_id={self.paciente_id!r},cidade_id={self.cidade_id!r},hygia={self.hygia},nome={self.nome!r},data_nasc={self.data_nasc!r},tel_1={self.tel_1!r},tel_2={self.tel_2!r},logradouro={self.logradouro!r}, numero={self.numero!r}, complemento={self.complemento!r}, cep={self.cep!r})"
     
-    def __init__(self, cidade_id, nome, data_nasc, tel_1, tel_2, logradouro, numero, complemento, cep):
+    def __init__(self, cidade_id, hygia, nome, data_nasc, tel_1, tel_2, logradouro, numero, complemento, cep):
         self.cidade_id = cidade_id
+        self.hygia = hygia
         self.nome = nome 
         self.data_nasc = data_nasc
         self.tel_1 = tel_1
@@ -126,6 +128,22 @@ class Paciente (Base):
         self.numero = numero
         self.complemento = complemento
         self.cep = cep
+        
+    # for build json format
+    def obj_to_dict(self):  
+        return {
+            "paciente_id": str(self.paciente_id),
+            "cidade_id": str(self.cidade_id),
+            "hygia": self.hygia,
+            "nome": self.nome,
+            "data_nasc": self.data_nasc,
+            "tel_1": self.tel_1,
+            "tel_2": self.tel_2,
+            "logradouro": self.logradouro,
+            "numero": self.numero,
+            "complemento": self.complemento,
+            "cep": self.cep
+        }        
 
 class Tipo_Responsavel (Base):
     __tablename__ = "TIPO_RESPONSAVEL"
