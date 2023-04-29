@@ -228,6 +228,7 @@ class Agendamento (Base):
     observacao = Column(TEXT(500), nullable=False)
     custo_IFD = Column(NUMERIC(5, 2), nullable=False)
     custo_estadia = Column(NUMERIC(5, 2), nullable=False)
+    responsavel_pac = Column(TEXT(200), nullable=False)
 
     def __repr__(self) -> str:
         return f"Agendamento(agendamento_id={self.agendamento_id!r},paciente_id={self.paciente_id!r}),tipo_encaminhamento_id={self.tipo_encaminhamento_id!r}),tipo_doenca_id={self.tipo_doenca_id!r}),tipo_remocao_id={self.tipo_remocao_id!r}),hospital_id={self.hospital_id!r}),veiculo_id={self.veiculo_id!r}),estado_geral_paciente={self.estado_geral_paciente!r}),saida_prevista={self.saida_prevista!r}),observacao={self.observacao!r}),custo_IFD={self.paccusto_IFDiente_id!r}),custo_estadia={self.custo_estadia!r}),data_remocao={self.data_remocao!r})"

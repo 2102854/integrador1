@@ -254,9 +254,12 @@ def agendamentos_add():
         veiculos = session.query(Veiculo).order_by(Veiculo.modelo).all()
         motoristas = session.query(Motorista).order_by(Motorista.nome).all()
         usuarios = session.query(Usuario).order_by(Usuario.primeiro_nome).all() 
+        pacientes = session.query(Paciente).order_by(Paciente.nome).all() 
+        hospitais = session.query(Hospital).order_by(Hospital.nome).all() 
         return render_template('form_cad_agendamento.html', tipo_encaminhamentos=tipo_encaminhamentos, 
                                tipo_doencas=tipo_doencas,tipo_remocoes=tipo_remocoes,veiculos=veiculos, 
-                               motoristas=motoristas, usuarios=usuarios )
+                               motoristas=motoristas, usuarios=usuarios, pacientes=pacientes,
+                               hospitais = hospitais )
     
 
 #https://bootstrap-table.com/

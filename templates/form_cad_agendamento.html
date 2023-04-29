@@ -39,30 +39,27 @@
             <div class="col-md-12 mb-3"></div>
             <div class="col-md-12 mb-3">
                 <div class="col-md-6 p-1 slide">   
-                    <label for="nome">Nome do Paciente</label>           
+                    <label for="nome">Nome do Paciente</label>     
                     <div class="input-group">
-                        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do Paciente" value="Eliézer" maxlength="250" minlength="3" required aria-label="Nome do Paciente" aria-describedby="btnSearch1">
-                        <button class="btn btn-outline-secondary" type="button" id="btnSearch1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                                </svg>
-                        </button>
-                    </div>                    
+                        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do Paciente" value="" maxlength="250" minlength="3" aria-label="Nome do Paciente" aria-describedby="btnSearch1" readonly>
+                        <button class="btn btn-outline-secondary" type="button" id="btnSearch1" data-bs-toggle="modal" data-bs-target="#modalPaciente">
+                            <i class="bi bi-search"></i>
+                        </button>     
+                    </div>    
                     <div class="valid-feedback">
                         Looks good!
                     </div>
                     <div class="invalid-feedback">
                         Nome do Paciente inválido.
-                    </div>                
+                    </div>  
+                    <input id="paciente_id" value="" type="hidden" class="form-control" required>                
                 </div>
                 <div class="col-md-5 p-1 slide">   
                     <label for="hospital">Hospital de Encaminhamento</label>           
                     <div class="input-group ">
-                        <input type="text" class="form-control" id="hospital" name="hospital" placeholder="Nome do Hospital" value="" maxlength="250" minlength="3" required aria-label="Nome do Hospital" aria-describedby="btnSearch2">
-                        <button class="btn btn-outline-secondary" type="button" id="btnSearch2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                                </svg>
+                        <input type="text" class="form-control" id="hospital" name="hospital" placeholder="Nome do Hospital" value="" maxlength="250" minlength="3" required aria-label="Nome do Hospital" aria-describedby="btnSearch2" readonly>
+                        <button class="btn btn-outline-secondary" type="button" id="btnSearch2" data-bs-toggle="modal" data-bs-target="#modalHospital">
+                            <i class="bi bi-search"></i>
                         </button>
                     </div>                    
                     <div class="valid-feedback">
@@ -70,8 +67,19 @@
                     </div>
                     <div class="invalid-feedback">
                         Hospital inválido.
-                    </div>                
+                    </div> 
+                    <input id="hospital_id" value="" type="hidden" class="form-control" required>               
                 </div>
+            </div>
+            <div class="col-md-11 mb-2">
+                <label for="responsavel_pac">Responsável Paciente</label>
+                <input type="text" class="form-control" id="responsavel_pac" name="responsavel_pac" placeholder="Responsável pelo paciente" value="" maxlength="200" minlength="10">
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+                <div class="invalid-feedback">
+                    Nome do Responsável inválido.
+                </div>                
             </div>
             <div class="col-md-12 mb-2">
                 <div class="col-md-4 p-1 slide">
@@ -178,28 +186,29 @@
                     <div class="input-group">
                         <span class="input-group-text">R$</span>
                         <input type="text" class="form-control" id="custo_IFD" name="custo_IFD" placeholder="Custo IFD" value="" maxlength="20" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            IFD inválido.
+                        </div>   
                         <span class="input-group-text">,00</span>   
                     </div>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                    <div class="invalid-feedback">
-                        IFD inválido.
-                    </div>                                   
+                                
                 </div>  
-                <div class="col-md-2 p-1 slide">
+                <div class="col-md-2 slide">
                     <label for="cep">Estadia</label>
                     <div class="input-group">
                         <span class="input-group-text">R$</span>
                         <input type="text" class="form-control" id="custo_estadia" name="custo_estadia" placeholder="Custo estadia" value="" maxlength="20" required> 
-                        <span class="input-group-text">,00</span>    
-                    </div>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>   
-                    <div class="invalid-feedback">
-                        Custo da estadia inválido.
-                    </div>                              
+                        <span class="input-group-text">,00</span>  
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>   
+                        <div class="invalid-feedback">
+                            Custo da estadia inválido.
+                        </div>     
+                    </div>                           
                 </div>                                    
 
             </div>
@@ -238,61 +247,183 @@
                 </div>                
             </div>    
         </div>
-        <button class="btn btn-primary" type="submit">Salvar</button>
-        <button id="button" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTable">
-            Launch modal table
-        </button>
-
-
-        
-
+        <button class="btn btn-primary" type="submit">Salvar</button>      
     </form>
 
-    <!--Dialog mode-->
-    <div id="modalTable" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+    <!--Paciente Dialog mode-->
+    <div id="modalPaciente" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">TESTE DE MODAL</h5>
+                    <h6 class="modal-title">PACIENTES</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <!-- CORPO AQUI-->
-                    <table id="table"></table>                   
+                    <table class="table table-hover"
+                        id="table"
+                        data-locale="pt-BR"                        
+                        data-toolbar="#toolbar"
+                        data-toggle="table"
+                        data-pagination="true"
+                        data-search="true"
+                        data-show-columns="true"
+                        data-page-list="[5, 10, 15, 20, all]"
+                        data-side-pagination="local" 
+                        data-show-fullscreen="true"
+                        data-show-refresh="false"
+                        data-show-toggle="true"
+                        data-show-columns-toggle-all="true"
+                        data-detail-view="false"
+                        data-show-export="true"
+                        data-click-to-select="true"
+                        data-detail-formatter="detailFormatter"
+                        data-minimum-count-columns="2"
+                        data-show-pagination-switch="true"
+                        data-pagination="true"
+                        data-id-field="id"
+                        data-page-list="[10, 25, 50, 100, all]"
+                        data-show-footer="false"
+                        data-response-handler="responseHandler"                        
+                        >
+                        <thead>
+                            <tr class="tr-class-1">
+                                <th data-field="paciente_id" class="text-wrap align-middle">REGISTRO</th>
+                                <th data-field="nome">NOME</th>
+                                <th data-field="data_nasc" class="align-middle">DT NASC</th>
+                                <th data-field="hygia">HYGIA</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for paciente in pacientes %}  
+                            <tr id="tr-{{paciente.paciente_id}}">
+                                <td id="td-{{paciente.paciente_id}}" class="align-middle">
+                                    {{paciente.paciente_id}}
+                                </td>
+                                <td >
+                                    {{paciente.nome}}
+                                </td>  
+                                <td class="align-middle">
+                                    {{paciente.data_nasc}}
+                                </td>                                   
+                                <td >
+                                    {{paciente.hygia}}
+                                </td>   
+                                <td>
+                                    <div class="center">
+                                        <a class="selecionar" href="javascript:selectPac({{paciente.paciente_id}},'{{paciente.nome}}')" title="SELECIONAR">
+                                            <i class="bi bi-check2-square"></i>
+                                        </a>
+                                    </div>
+                                </td>                            
+                            </tr> 
+                            {% endfor %}                      
+                        </tbody>
+                    </table>                  
                     <!-- FIM CORPO-->
                 </div>
                 <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                 </div>
             </div>
         </div>
     </div>
-    <script>
 
+   <!--Hospital Dialog mode-->
+   <div id="modalHospital" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">HOSPITAL</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- CORPO AQUI-->
+                <table class="table table-hover"
+                    id="table"
+                    data-locale="pt-BR"                        
+                    data-toolbar="#toolbar"
+                    data-toggle="table"
+                    data-pagination="true"
+                    data-search="true"
+                    data-show-columns="true"
+                    data-page-list="[5, 10, 15, 20, all]"
+                    data-side-pagination="local" 
+                    data-show-fullscreen="true"
+                    data-show-refresh="false"
+                    data-show-toggle="true"
+                    data-show-columns-toggle-all="true"
+                    data-detail-view="false"
+                    data-show-export="true"
+                    data-click-to-select="true"
+                    data-detail-formatter="detailFormatter"
+                    data-minimum-count-columns="2"
+                    data-show-pagination-switch="true"
+                    data-pagination="true"
+                    data-id-field="id"
+                    data-page-list="[10, 25, 50, 100, all]"
+                    data-show-footer="false"
+                    data-response-handler="responseHandler"                        
+                    >
+                    <thead>
+                        <tr class="tr-class-1">
+                            <th data-field="hospital_id" class="text-wrap align-middle">REGISTRO</th>
+                            <th data-field="nome">NOME</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for hospital in hospitais %}  
+                        <tr id="tr-{{hospital.hospital_id}}">
+                            <td id="td-{{hospital.hospital_id}}" class="align-middle">
+                                {{hospital.hospital_id}}
+                            </td>
+                            <td >
+                                {{hospital.nome}}
+                            </td>   
+                            <td>
+                                <div class="center">
+                                    <a class="selecionar" href="javascript:selectHospital({{hospital.hospital_id}},'{{hospital.nome}}')" title="SELECIONAR">
+                                        <i class="bi bi-check2-square"></i>
+                                    </a>
+                                </div>
+                            </td>                            
+                        </tr> 
+                        {% endfor %}                      
+                    </tbody>
+                </table>                  
+                <!-- FIM CORPO-->
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+        /*
         var elementCount = $('#nome').val();
         console.log(elementCount);
+        // window.alert("Ei, você clicou !!!" + nome);
+        */
 
-        $('#table').bootstrapTable({
-            columns: [{
-                field: 'id',
-                title: 'Item ID'
-            }, {
-                field: 'name',
-                title: 'Item Name'
-            }, {
-                field: 'price',
-                title: 'Item Price'
-            }],
-            data: [{
-                id: 1,
-                name: 'Item 1',
-                price: '$1'
-            }, {
-                id: 2,
-                name: 'Item 2',
-                price: '$2'
-            }]
-        });
+        function selectPac(id,nome)
+        {
+            $("#nome").val(nome);
+            $("#paciente_id").val(id);
+            $("#modalPaciente").modal('hide'); 
+            //window.alert($("#paciente_id").val());           
+        }
+
+        function selectHospital(id,nome)
+        {
+            $("#hospital").val(nome);
+            $("#hospital_id").val(id);
+            $("#modalHospital").modal('hide'); 
+            //window.alert($("#paciente_id").val());           
+        }        
 
         // Validador do formulário
         (function() {
@@ -311,13 +442,6 @@
                 });
             }, false);
         })();
-
-        
-
-
-
-
- 
     </script>      
 
 {% endblock %}
