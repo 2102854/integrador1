@@ -3,6 +3,27 @@
 {% block content %}
 
 </script>
+<style>
+    textarea {
+      resize: none;
+    }
+</style>
+<script>
+    function validate(field1, field2, field3){
+
+    const areatextarea = document.querySelector(field1);
+    const areatext = document.querySelector(field1).value.length;
+    const textcount = document.querySelector(field2);
+    const wordcount = document.querySelector(field3);
+    textcount.innerHTML = areatext;    
+     
+    if(areatext < 1){
+        wordcount.classList.add("d-none");
+    }else{
+        wordcount.classList.remove("d-none");
+    }
+}
+</script>
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
@@ -16,10 +37,18 @@
     </nav>
     <form class="needs-validation" novalidate method="post" >
         <div class="form-row">
-            <div class="col-md-11 mb-3">              
-                <div class="col-md-8 slide">
-                    <label for="nome">Nome do paciente</label>
-                    <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do Paciente" value="" maxlength="250" minlength="3" required>
+            <div class="col-md-12 mb-3"></div>
+            <div class="col-md-12 mb-3">
+                <div class="col-md-6 p-1 slide">   
+                    <label for="nome">Nome do Paciente</label>           
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do Paciente" value="" maxlength="250" minlength="3" required aria-label="Nome do Paciente" aria-describedby="btnSearch1">
+                        <button class="btn btn-outline-secondary" type="button" id="btnSearch1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                </svg>
+                        </button>
+                    </div>                    
                     <div class="valid-feedback">
                         Looks good!
                     </div>
@@ -27,92 +56,179 @@
                         Nome do Paciente inválido.
                     </div>                
                 </div>
-                <div class="col-md-3 p-1 slide">
-                    <label for="data_nasc">Data de nascimento</label>
-                    <input type="text" class="form-control" id="data_nasc" name="data_nasc" placeholder="Data de Nascimento" value="" maxlength="10" minlength="10" required>
+                <div class="col-md-5 p-1 slide">   
+                    <label for="hospital">Hospital de Encaminhamento</label>           
+                    <div class="input-group ">
+                        <input type="text" class="form-control" id="hospital" name="hospital" placeholder="Nome do Hospital" value="" maxlength="250" minlength="3" required aria-label="Nome do Hospital" aria-describedby="btnSearch2">
+                        <button class="btn btn-outline-secondary" type="button" id="btnSearch2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                </svg>
+                        </button>
+                    </div>                    
                     <div class="valid-feedback">
                         Looks good!
                     </div>
                     <div class="invalid-feedback">
-                    Data de nascimento inválida.
+                        Hospital inválido.
                     </div>                
                 </div>
             </div>
-            <div class="col-md-8 mb-3">
-                <div class="slide col-md-4">
-                    <label for="tel_1">Telefone principal</label>
-                    <input type="text" class="form-control" id="tel_1" name="tel_1" placeholder="Telefone principal" value="" maxlength="11" minlength="10" required>
+            <div class="col-md-12 mb-2">
+                <div class="col-md-4 p-1 slide">
+                    <label for="encaminhamento">Tipo de encaminhamento</label>
+                    <select class="form-select form-select-lm mb-1" name="encaminhamento" id="encaminhamento" aria-label=".form-select" data-live-search="true" required>
+                        <option selected></option>
+                        {% for tipo_encaminhamento in tipo_encaminhamentos %}   
+                        <option value="{{tipo_encaminhamento.tipo_encaminhamento_id}}">{{tipo_encaminhamento.nome}}</option>
+                        {% endfor %}
+                    </select>
                     <div class="valid-feedback">
                         Looks good!
                     </div>
                     <div class="invalid-feedback">
-                    Número do Telefone inválido.
-                    </div>
-                </div>  
-                <div class="slide col-md-4 p-1">
-                    <label for="tel_2">Telefone Contato</label>
-                    <input type="text" class="form-control" id="tel_2" name="tel_2" placeholder="Telefone contato" value="" maxlength="11" minlength="10">
+                        Tipo de encaminhamento inválido.
+                    </div>                    
+                </div>
+                <div class="col-md-4 p-1 slide">
+                    <label for="doenca">Tipo de doença</label>
+                    <select class="form-select form-select-lm mb-1" name="doenca" id="doenca" aria-label=".form-select" data-live-search="true" required>
+                        <option selected></option>
+                        {% for tipo_doenca in tipo_doencas %}   
+                        <option value="{{tipo_doenca.tipo_doenca_id}}">{{tipo_doenca.nome}}</option>
+                        {% endfor %}
+                    </select>
                     <div class="valid-feedback">
                         Looks good!
                     </div>
                     <div class="invalid-feedback">
-                    Número do Telefone inválido.
+                        Tipo de doença inválida.
+                    </div>    
+                </div>     
+                <div class="col-md-3 p-1 slide">
+                    <label for="remocao">Tipo de remoção</label>
+                    <select class="form-select form-select-lm mb-1" name="remocao" id="remocao" aria-label=".form-select" data-live-search="true" required>
+                        <option selected></option>
+                        {% for tipo_remocao in tipo_remocoes %}   
+                        <option value="{{tipo_remocao.tipo_remocao_id}}">{{tipo_remocao.nome}}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="valid-feedback">
+                        Looks good!
                     </div>
-                </div>                               
+                    <div class="invalid-feedback">
+                        Tipo de remoção inválida.
+                    </div>    
+                </div>              
             </div>
-            <div class="col-md-10 mb-3">
-                <label for="cidade">Cidade</label>
-                <select class="form-select form-select-lm mb-1 " name="cidade" id="cidade" aria-label=".form-select" data-live-search="true" required>
-                    <option selected></option>
-                    {% for cidade in cidades %}   
-                    <option value="{{cidade.cidade_id}}">{{cidade.nome}}</option>
-                    {% endfor %}
-                </select>
+            <div class="col-md-12 mb-3">
+                <div class="col-md-6 p-1 slide">
+                    <label for="data_remocao">Data remoção</label>
+                    <input type="datetime-local" class="form-control" id="data_remocao" name="data_remocao"  value="" required>   
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Data Inválida.
+                    </div>                                   
+                </div> 
+                <div class="col-md-5 p-1 slide">
+                    <label for="saida_prevista">Saída prevista</label>
+                    <input type="datetime-local" class="form-control" id="saida_prevista" name="saida_prevista" value="" required>   
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Data Inválida.
+                    </div>                                   
+                </div>                                 
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="col-md-4 p-1 slide">
+                    <label for="remocao">Veículo / Placa</label>
+                    <select class="form-select form-select-lm mb-1" name="veiculo" id="veiculo" aria-label=".form-select" data-live-search="true" required>
+                        <option selected></option>
+                        {% for veiculo in veiculos %}   
+                        <option value="{{veiculo.veiculo_id}}">{{veiculo.modelo}} - {{veiculo.placa}}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Veiculo inválido.
+                    </div>    
+                </div>
+                <div class="col-md-4 p-1 slide">
+                    <label for="custo_IFD">IFD</label>
+                    <div class="input-group">
+                        <span class="input-group-text">R$</span>
+                        <input type="text" class="form-control" id="custo_IFD" name="custo_IFD" placeholder="Custo IFD" value="" maxlength="20" required>
+                        <span class="input-group-text">,00</span>   
+                    </div>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        IFD inválido.
+                    </div>                                   
+                </div>  
+                <div class="col-md-3 p-1 slide">
+                    <label for="cep">Estadia</label>
+                    <div class="input-group">
+                        <span class="input-group-text">R$</span>
+                        <input type="text" class="form-control" id="custo_estadia" name="custo_estadia" placeholder="Custo estadia" value="" maxlength="20" required> 
+                        <span class="input-group-text">,00</span>    
+                    </div>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>   
+                    <div class="invalid-feedback">
+                        Custo da estadia inválido.
+                    </div>                              
+                </div>                                    
+
+            </div>
+            <div class="col-md-11 mb-3">   
+                <div class="form-floating">                    
+                    <textarea class="form-control" placeholder="Estado geral do paciente" id="estado_geral_paciente" onkeyup="validate('#estado_geral_paciente', '#textcount1', '#words_count1')" style="height: 100px" maxlength="500"></textarea>
+                    <label for="estado_geral_paciente">Estado Geral do Paciente</label>
+                </div>  
+                <div class="d-flex justify-content-end">
+                    <small>
+                        <span id="textcount1">0</span><span id="words_count1" class="d-none">&nbsp;de 500</span>
+                    </small>
+                </div>                                 
                 <div class="valid-feedback">
                     Looks good!
                 </div>
                 <div class="invalid-feedback">
-                    Cidade inválida.
-                </div>   
-
-                  
-            </div>            
-            <div class="col-md-12 mb-3">
-                <div class="slide col-md-8">
-                    <label for="logradouro">Logradouro</label>
-                    <input type="text" class="form-control" id="logradouro" name="logradouro" placeholder="Logradouro" value="" maxlength="400" minlength="5" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                    <div class="invalid-feedback">
-                        Logradouro inválida.
-                    </div>     
+                    Estado geral inválido.
+                </div>                
+            </div>
+            <div class="col-md-11 mb-3">   
+                <div class="form-floating">                    
+                    <textarea class="form-control" placeholder="Leave a comment here" id="observacao" onkeyup="validate('#observacao', '#textcount2', '#words_count2')" style="height: 100px" maxlength="500"></textarea>
+                    <label for="estado_geral_paciente">Observação</label>
                 </div>  
-                <div class="slide col-md-2 p-1">
-                    <label for="numero">Número</label>
-                    <input type="text" class="form-control" id="numero" name="numero" placeholder="Numero" value="" maxlength="11" minlength="1" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                    <div class="invalid-feedback">
-                    Número inválido.
-                    </div>
-                </div>                               
-            </div>            
-            <div class="col-md-4 mb-3">
-                <label for="complemento">Complemento</label>
-                <input type="text" class="form-control" id="complemento" name="complemento" placeholder="Complemento" value="" maxlength="50">   
+                <div class="d-flex justify-content-end">
+                    <small>
+                        <span id="textcount2">0</span><span id="words_count2" class="d-none">&nbsp;de 500</span>
+                    </small>
+                </div>                                 
                 <div class="valid-feedback">
                     Looks good!
-                </div>           
-            </div>  
-            <div class="col-md-4 mb-3">
-                <label for="cep">Cep</label>
-                <input type="text" class="form-control" id="cep" name="cep" placeholder="Cep" value="" maxlength="10">     
-                <div class="valid-feedback">
-                    Looks good!
-                </div>         
-            </div>                       
+                </div>
+                <div class="invalid-feedback">
+                    Estado geral inválido.
+                </div>                
+            </div>
+
+
+
+
+           
+                      
         </div>
         <button class="btn btn-primary" type="submit">Salvar</button>
     </form>

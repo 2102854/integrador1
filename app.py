@@ -248,8 +248,11 @@ def agendamentos_add():
         return redirect(url_for('pacientes'))    
     
     else:
-        cidades = session.query(Cidade).all()
-        return render_template('form_cad_agendamento.html', cidades=cidades)
+        tipo_encaminhamentos = session.query(Tipo_Encaminhamento).order_by(Tipo_Encaminhamento.nome).all()
+        tipo_doencas = session.query(Tipo_Doenca).order_by(Tipo_Doenca.nome).all()
+        tipo_remocoes = session.query(Tipo_Remocao).order_by(Tipo_Remocao.nome).all()
+        veiculos = session.query(Veiculo).order_by(Veiculo.modelo).all()
+        return render_template('form_cad_agendamento.html', tipo_encaminhamentos=tipo_encaminhamentos, tipo_doencas=tipo_doencas,tipo_remocoes=tipo_remocoes,veiculos=veiculos)
     
 
 #https://bootstrap-table.com/
