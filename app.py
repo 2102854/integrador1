@@ -4,7 +4,7 @@
 
 # Referencias
 import locale
-from models import Pais, Estado, Cidade, Endereco, Veiculo, Hospital, Paciente, Tipo_Responsavel, Responsavel, Tipo_Doenca, Tipo_Encaminhamento, Tipo_Remocao, Agendamento, Agendamento_Responsavel
+from models import Pais, Estado, Cidade, Veiculo, Hospital, Paciente, Motorista, Usuario, Tipo_Doenca, Tipo_Encaminhamento, Tipo_Remocao, Agendamento
 from flask import Flask, render_template, url_for, flash, redirect, request
 from flask import jsonify
 from sqlalchemy import create_engine, func
@@ -252,7 +252,11 @@ def agendamentos_add():
         tipo_doencas = session.query(Tipo_Doenca).order_by(Tipo_Doenca.nome).all()
         tipo_remocoes = session.query(Tipo_Remocao).order_by(Tipo_Remocao.nome).all()
         veiculos = session.query(Veiculo).order_by(Veiculo.modelo).all()
-        return render_template('form_cad_agendamento.html', tipo_encaminhamentos=tipo_encaminhamentos, tipo_doencas=tipo_doencas,tipo_remocoes=tipo_remocoes,veiculos=veiculos)
+        motoristas = session.query(Motorista).order_by(Motorista.nome).all()
+        usuarios = session.query(Usuario).order_by(Usuario.primeiro_nome).all() 
+        return render_template('form_cad_agendamento.html', tipo_encaminhamentos=tipo_encaminhamentos, 
+                               tipo_doencas=tipo_doencas,tipo_remocoes=tipo_remocoes,veiculos=veiculos, 
+                               motoristas=motoristas, usuarios=usuarios )
     
 
 #https://bootstrap-table.com/

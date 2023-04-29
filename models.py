@@ -145,11 +145,16 @@ class Paciente (Base):
             "cep": self.cep
         }        
 
-class Tipo_Responsavel (Base):
-    __tablename__ = "TIPO_RESPONSAVEL"
+class Usuario (Base):
+    __tablename__ = "USUARIO"
 
-    tipo_responsavel_id = Column(INTEGER, primary_key=True)
-    nome = Column(TEXT(250), nullable=False)
+    usuario_id = Column(INTEGER, primary_key=True)
+    primeiro_nome = Column(TEXT(30), nullable=False)
+    sobrenome =  Column(TEXT(100), nullable=False)
+    username = Column(TEXT(150), nullable=False)
+    senha = Column(TEXT(128), nullable=False)
+    email = Column(TEXT(250), nullable=False)
+    ativo = Column(BOOLEAN, nullable=False)
 
     def __repr__(self) -> str:
         return f"Tipo_Responsavel(tipo_Responsavel_id={self.tipo_responsavel_id!r},nome={self.nome!r})"
@@ -157,17 +162,16 @@ class Tipo_Responsavel (Base):
     def __init__(self, nome):
         self.nome = nome 
 
-class Responsavel (Base):
-    __tablename__ = "RESPONSAVEL"
+class Motorista (Base):
+    __tablename__ = "MOTORISTA"
 
-    responsavel_id = Column(INTEGER, primary_key=True)
-    tipo_responsavel_id = Column(INTEGER, nullable=False)
+    motorista_id = Column(INTEGER, primary_key=True)
     nome = Column(TEXT(250), nullable=False)
     numero_habilitacao = Column(TEXT(50), nullable=False)
     carga_horaria = Column(NUMERIC(5, 2), nullable=False)
 
     def __repr__(self) -> str:
-        return f"Responsavel(responsavel_id={self.responsavel_id!r},tipo_responsavel={self.tipo_responsavel_id!r},nome={self.nome!r},numero_habilitacao={self.numero_habilitacao!r},carga_horaria={self.carga_horaria!r})"
+        return f"Responsavel(responsavel_id={self.motorista_id!r},nome={self.nome!r},numero_habilitacao={self.numero_habilitacao!r},carga_horaria={self.carga_horaria!r})"
     
     def __init__(self, nome):
         self.nome = nome 

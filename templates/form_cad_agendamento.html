@@ -23,8 +23,7 @@
         wordcount.classList.remove("d-none");
     }
 }
-</script>
-
+</script>     
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -42,7 +41,7 @@
                 <div class="col-md-6 p-1 slide">   
                     <label for="nome">Nome do Paciente</label>           
                     <div class="input-group">
-                        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do Paciente" value="" maxlength="250" minlength="3" required aria-label="Nome do Paciente" aria-describedby="btnSearch1">
+                        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do Paciente" value="Eliézer" maxlength="250" minlength="3" required aria-label="Nome do Paciente" aria-describedby="btnSearch1">
                         <button class="btn btn-outline-secondary" type="button" id="btnSearch1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -144,7 +143,7 @@
                 </div>                                 
             </div>
             <div class="col-md-12 mb-3">
-                <div class="col-md-4 p-1 slide">
+                <div class="col-md-3 p-1 slide">
                     <label for="remocao">Veículo / Placa</label>
                     <select class="form-select form-select-lm mb-1" name="veiculo" id="veiculo" aria-label=".form-select" data-live-search="true" required>
                         <option selected></option>
@@ -160,6 +159,21 @@
                     </div>    
                 </div>
                 <div class="col-md-4 p-1 slide">
+                    <label for="motorista">Motorista</label>
+                    <select class="form-select form-select-lm mb-1" name="motorista" id="motorista" aria-label=".form-select" data-live-search="true" required>
+                        <option selected></option>
+                        {% for motorista in motoristas %}   
+                        <option value="{{motorista.motorista_id}}">{{motorista.nome}}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Veiculo inválido.
+                    </div>    
+                </div>                
+                <div class="col-md-2 p-1 slide">
                     <label for="custo_IFD">IFD</label>
                     <div class="input-group">
                         <span class="input-group-text">R$</span>
@@ -173,7 +187,7 @@
                         IFD inválido.
                     </div>                                   
                 </div>  
-                <div class="col-md-3 p-1 slide">
+                <div class="col-md-2 p-1 slide">
                     <label for="cep">Estadia</label>
                     <div class="input-group">
                         <span class="input-group-text">R$</span>
@@ -222,17 +236,64 @@
                 <div class="invalid-feedback">
                     Estado geral inválido.
                 </div>                
-            </div>
-
-
-
-
-           
-                      
+            </div>    
         </div>
         <button class="btn btn-primary" type="submit">Salvar</button>
+        <button id="button" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTable">
+            Launch modal table
+        </button>
+
+
+        
+
     </form>
+
+    <!--Dialog mode-->
+    <div id="modalTable" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">TESTE DE MODAL</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- CORPO AQUI-->
+                    <table id="table"></table>                   
+                    <!-- FIM CORPO-->
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
+
+        var elementCount = $('#nome').val();
+        console.log(elementCount);
+
+        $('#table').bootstrapTable({
+            columns: [{
+                field: 'id',
+                title: 'Item ID'
+            }, {
+                field: 'name',
+                title: 'Item Name'
+            }, {
+                field: 'price',
+                title: 'Item Price'
+            }],
+            data: [{
+                id: 1,
+                name: 'Item 1',
+                price: '$1'
+            }, {
+                id: 2,
+                name: 'Item 2',
+                price: '$2'
+            }]
+        });
+
         // Validador do formulário
         (function() {
             'use strict';
@@ -250,6 +311,13 @@
                 });
             }, false);
         })();
+
+        
+
+
+
+
+ 
     </script>      
 
 {% endblock %}
