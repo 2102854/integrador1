@@ -230,22 +230,29 @@ def agendamentos():
 @app.route('/agendamentos/novo/', methods=('GET', 'POST'))
 def agendamentos_add():
     if request.method == 'POST':      
-        
-        novoPaciente = Paciente (
-            request.form['cidade'],
-            request.form['hygia'],
-            request.form['nome'].upper(), 
-            request.form['data_nasc'], 
-            request.form['tel_1'], 
-            request.form['tel_2'], 
-            request.form['logradouro'].upper(), 
-            request.form['numero'], 
-            request.form['complemento'].upper(), 
-            request.form['cep']
+        novoAgendamento = Agendamento (
+            request.form['paciente_id'],           
+            request.form['encaminhamento'], 
+            request.form['doenca'],
+            request.form['remocao'],
+            request.form['hospital_id'],
+            request.form['veiculo'],
+            request.form['responsavel_pac'].upper(),
+            request.form['usuario_id'],
+            request.form['motorista'],
+            request.form['estado_geral_paciente'].upper(),  
+            request.form['data_remocao'], 
+            request.form['saida_prevista'], 
+            request.form['observacao'].upper(), 
+            request.form['custo_IFD'],
+            request.form['custo_estadia']          
         )
-        session.add(novoPaciente)        
+        session.add(novoAgendamento)        
         session.commit()        
-        return redirect(url_for('pacientes'))    
+        return redirect(url_for('agendamentos'))    
+
+        #paciente_id, tipo_encaminhamento_id, tipo_doenca_id, tipo_remocao_id, hospital_id, veiculo_id, responsavel_pac, 
+        #usuario_id, motorista_id, estado_geral_paciente, data_remocao, saida_prevista, observacao, custo_IFD, custo_estadia
     
     else:
         tipo_encaminhamentos = session.query(Tipo_Encaminhamento).order_by(Tipo_Encaminhamento.nome).all()

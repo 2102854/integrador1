@@ -222,29 +222,37 @@ class Agendamento (Base):
     tipo_remocao_id = Column(INTEGER, nullable=False)
     hospital_id = Column(INTEGER, nullable=False)
     veiculo_id = Column(INTEGER, nullable=False)
+    responsavel_pac = Column(TEXT(200), nullable=False)
+    usuario_id = Column(INTEGER, nullable=True)
+    motorista_id = Column(INTEGER, nullable=False)
     estado_geral_paciente = Column(TEXT(500), nullable=False)
-    data_remocao = Column(DATE, nullable=False)
-    saida_prevista = Column(DATE, nullable=False)
+    data_remocao = Column(TEXT(20), nullable=False)
+    saida_prevista = Column(TEXT(20), nullable=False)
     observacao = Column(TEXT(500), nullable=False)
     custo_IFD = Column(NUMERIC(5, 2), nullable=False)
-    custo_estadia = Column(NUMERIC(5, 2), nullable=False)
-    responsavel_pac = Column(TEXT(200), nullable=False)
+    custo_estadia = Column(NUMERIC(5, 2), nullable=False)   
 
     def __repr__(self) -> str:
-        return f"Agendamento(agendamento_id={self.agendamento_id!r},paciente_id={self.paciente_id!r}),tipo_encaminhamento_id={self.tipo_encaminhamento_id!r}),tipo_doenca_id={self.tipo_doenca_id!r}),tipo_remocao_id={self.tipo_remocao_id!r}),hospital_id={self.hospital_id!r}),veiculo_id={self.veiculo_id!r}),estado_geral_paciente={self.estado_geral_paciente!r}),saida_prevista={self.saida_prevista!r}),observacao={self.observacao!r}),custo_IFD={self.paccusto_IFDiente_id!r}),custo_estadia={self.custo_estadia!r}),data_remocao={self.data_remocao!r})"
+        return (f"Agendamento(agendamento_id={self.agendamento_id!r},paciente_id={self.paciente_id!r}), responsavel_pac={self.responsavel_pac!r}),\
+                tipo_encaminhamento_id={self.tipo_encaminhamento_id!r}),tipo_doenca_id={self.tipo_doenca_id!r}), tipo_remocao_id={self.tipo_remocao_id!r}),\
+                hospital_id={self.hospital_id!r}), veiculo_id={self.veiculo_id!r}), estado_geral_paciente={self.estado_geral_paciente!r}),\
+                data_remocao={self.data_remocao!r}), saida_prevista={self.saida_prevista!r}), observacao={self.observacao!r}), \
+                custo_IFD={self.custo_IFD!r}), custo_estadia={self.custo_estadia!r}), motorista_id={self.motorista_id!r}), usuario_id={self.usuario_id!r})")
     
-    def __init__(self, agendamento_id):
-        self.agendamento_id = agendamento_id 
-
-class Agendamento_Responsavel (Base):
-    __tablename__ = "AGENDAMENTO_RESPONSAVEL"
-
-    agendamento_responsavel_id = Column(INTEGER, primary_key=True)
-    agendamento_id = Column(INTEGER, nullable=False)
-    responsavel_id = Column(INTEGER, nullable=False)
-
-    def __repr__(self) -> str:
-        return f"Agendamento_Responsavel(agendamento_responsavel_id={self.agendamento_responsavel_id!r},agendamento_id={self.agendamento_id!r}),responsavel_id={self.responsavel_id!r})"
-    
-    def __init__(self, agendamento_responsavel_id):
-        self.agendamento_responsavel_id = agendamento_responsavel_id 
+    def __init__(self, paciente_id, tipo_encaminhamento_id, tipo_doenca_id, tipo_remocao_id, hospital_id, veiculo_id, responsavel_pac, 
+                 usuario_id, motorista_id, estado_geral_paciente, data_remocao, saida_prevista, observacao, custo_IFD, custo_estadia):  
+        self.paciente_id = paciente_id
+        self.tipo_encaminhamento_id = tipo_encaminhamento_id
+        self.tipo_doenca_id = tipo_doenca_id
+        self.tipo_remocao_id = tipo_remocao_id
+        self.hospital_id = hospital_id
+        self.veiculo_id = veiculo_id
+        self.responsavel_pac = responsavel_pac
+        self.usuario_id = usuario_id
+        self.motorista_id = motorista_id
+        self.estado_geral_paciente = estado_geral_paciente
+        self.data_remocao = data_remocao
+        self.saida_prevista = saida_prevista
+        self.observacao = observacao 
+        self.custo_IFD = custo_IFD
+        self.custo_estadia = custo_estadia

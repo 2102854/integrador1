@@ -35,10 +35,12 @@
         </div>
     </nav>
     <form class="needs-validation" novalidate method="post" >
+        <input type="hidden" class="form-control" id="usuario_id" name="usuario_id" placeholder="" value="1" maxlength="20" required>
         <div class="form-row">
             <div class="col-md-12 mb-3"></div>
             <div class="col-md-12 mb-3">
                 <div class="col-md-6 p-1 slide">   
+                    <input type="hidden" class="form-control" id="paciente_id" name="paciente_id" placeholder="" value="" maxlength="20" required>
                     <label for="nome">Nome do Paciente</label>     
                     <div class="input-group">
                         <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do Paciente" value="" maxlength="250" minlength="3" aria-label="Nome do Paciente" aria-describedby="btnSearch1" readonly>
@@ -51,10 +53,10 @@
                     </div>
                     <div class="invalid-feedback">
                         Nome do Paciente inválido.
-                    </div>  
-                    <input id="paciente_id" value="" type="hidden" class="form-control" required>                
+                    </div>                 
                 </div>
-                <div class="col-md-5 p-1 slide">   
+                <div class="col-md-5 p-1 slide"> 
+                    <input type="hidden" class="form-control" id="hospital_id" name="hospital_id" placeholder="" value="" maxlength="20" required>  
                     <label for="hospital">Hospital de Encaminhamento</label>           
                     <div class="input-group ">
                         <input type="text" class="form-control" id="hospital" name="hospital" placeholder="Nome do Hospital" value="" maxlength="250" minlength="3" required aria-label="Nome do Hospital" aria-describedby="btnSearch2" readonly>
@@ -67,13 +69,12 @@
                     </div>
                     <div class="invalid-feedback">
                         Hospital inválido.
-                    </div> 
-                    <input id="hospital_id" value="" type="hidden" class="form-control" required>               
+                    </div>               
                 </div>
             </div>
             <div class="col-md-11 mb-2">
                 <label for="responsavel_pac">Responsável Paciente</label>
-                <input type="text" class="form-control" id="responsavel_pac" name="responsavel_pac" placeholder="Responsável pelo paciente" value="" maxlength="200" minlength="10">
+                <input type="text" class="form-control" id="responsavel_pac" name="responsavel_pac" placeholder="Responsável pelo paciente" value="" maxlength="200" minlength="5">
                 <div class="valid-feedback">
                     Looks good!
                 </div>
@@ -178,7 +179,7 @@
                         Looks good!
                     </div>
                     <div class="invalid-feedback">
-                        Veiculo inválido.
+                        Motorista inválido.
                     </div>    
                 </div>                
                 <div class="col-md-2 p-1 slide">
@@ -214,7 +215,7 @@
             </div>
             <div class="col-md-11 mb-3">   
                 <div class="form-floating">                    
-                    <textarea class="form-control" placeholder="Estado geral do paciente" id="estado_geral_paciente" onkeyup="validate('#estado_geral_paciente', '#textcount1', '#words_count1')" style="height: 100px" maxlength="500"></textarea>
+                    <textarea class="form-control" placeholder="Estado geral do paciente" name="estado_geral_paciente" id="estado_geral_paciente" onkeyup="validate('#estado_geral_paciente', '#textcount1', '#words_count1')" style="height: 100px" maxlength="500"></textarea>
                     <label for="estado_geral_paciente">Estado Geral do Paciente</label>
                 </div>  
                 <div class="d-flex justify-content-end">
@@ -231,8 +232,8 @@
             </div>
             <div class="col-md-11 mb-3">   
                 <div class="form-floating">                    
-                    <textarea class="form-control" placeholder="Leave a comment here" id="observacao" onkeyup="validate('#observacao', '#textcount2', '#words_count2')" style="height: 100px" maxlength="500"></textarea>
-                    <label for="estado_geral_paciente">Observação</label>
+                    <textarea class="form-control" placeholder="Leave a comment here" name="observacao" id="observacao" onkeyup="validate('#observacao', '#textcount2', '#words_count2')" style="height: 100px" maxlength="500"></textarea>
+                    <label for="observacao">Observação</label>
                 </div>  
                 <div class="d-flex justify-content-end">
                     <small>
@@ -275,14 +276,13 @@
                         data-show-toggle="true"
                         data-show-columns-toggle-all="true"
                         data-detail-view="false"
-                        data-show-export="true"
+                        data-show-export="false"
                         data-click-to-select="true"
                         data-detail-formatter="detailFormatter"
                         data-minimum-count-columns="2"
                         data-show-pagination-switch="true"
                         data-pagination="true"
                         data-id-field="id"
-                        data-page-list="[10, 25, 50, 100, all]"
                         data-show-footer="false"
                         data-response-handler="responseHandler"                        
                         >
@@ -355,14 +355,13 @@
                     data-show-toggle="true"
                     data-show-columns-toggle-all="true"
                     data-detail-view="false"
-                    data-show-export="true"
+                    data-show-export="false"
                     data-click-to-select="true"
                     data-detail-formatter="detailFormatter"
                     data-minimum-count-columns="2"
                     data-show-pagination-switch="true"
                     data-pagination="true"
                     data-id-field="id"
-                    data-page-list="[10, 25, 50, 100, all]"
                     data-show-footer="false"
                     data-response-handler="responseHandler"                        
                     >
