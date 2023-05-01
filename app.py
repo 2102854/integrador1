@@ -4,6 +4,9 @@
 
 # Referencias
 import locale
+#from datetime import date, datetime, time
+#from babel.dates import format_date, format_datetime, format_time
+#https://babel.pocoo.org/en/latest/dates.html
 from models import Pais, Estado, Cidade, Veiculo, Hospital, Paciente, Motorista, Usuario, Tipo_Doenca, Tipo_Encaminhamento, Tipo_Remocao, Agendamento
 from flask import Flask, render_template, url_for, flash, redirect, request
 from flask import jsonify
@@ -29,6 +32,15 @@ session = Session(engine)
 # Configuração da aplicação
 app = Flask(__name__)
 app.debug = True
+
+#Cria um filtro para o Jinja2 para formatar a data
+@app.template_filter()
+def format_datetime(value):
+    v = str(value).split('T')
+    v_d = str(v[0]).split('-')
+    v_date = v_d[2] + "/" + v_d[1] + "/" + v_d[0]
+    v_time = v[1]
+    return v_date + ' ' + v_time
 
 #página inicial
 @app.route("/")
@@ -78,7 +90,25 @@ def index():
         for x in range(4 - num_pac):
             lt_pacientes.append("..")
 
-    return render_template('index.html', hospitais=num_hospitais, pacientes=num_pacientes, agendamentos=num_agendamentos, lt_hospitais=lt_hospitais, lt_pacientes=lt_pacientes)
+    #Carrega a lista de agendamentos 
+    agendamentos = session.query(Agendamento, Paciente ).order_by(Agendamento.agendamento_id.desc()).join(Paciente, Agendamento.paciente_id == Paciente.paciente_id).all() 
+
+    lt_agendamentos = []
+    num_age = 0
+
+    for agendamento in agendamentos:
+        num_age = num_age + 1
+        
+        lt_agendamentos.append(agendamento.Paciente.nome)
+        if num_age > 3:
+            break
+
+    if num_age < 4:
+        for x in range(4 - num_age):
+            lt_agendamentos.append("..")               
+
+    return render_template('index.html', hospitais=num_hospitais, pacientes=num_pacientes, agendamentos=num_agendamentos,
+                          lt_hospitais=lt_hospitais, lt_pacientes=lt_pacientes, lt_agendamentos=lt_agendamentos)
 
 #Abre a página de países
 @app.route("/paises")
@@ -149,11 +179,11 @@ def cidades():
 @app.route("/pacientes")
 def pacientes():
     #http://127.0.0.1:5000/pacientes?nome=rosa
-    nome = request.args.get('nome', default = '', type = str)
-    if nome == '':    
-        sql = session.query(Paciente, Cidade).join(Cidade, Paciente.cidade_id == Cidade.cidade_id).all()        
-    else:
-        sql = session.query(Paciente, Cidade).filter(ilike_op(Paciente.nome,f'%{nome}%')).join(Cidade, Paciente.cidade_id == Cidade.cidade_id).all()
+    #nome = request.args.get('nome', default = '', type = str)
+    #if nome == '':    
+    sql = session.query(Paciente, Cidade).join(Cidade, Paciente.cidade_id == Cidade.cidade_id).all()        
+    #else:
+    #sql = session.query(Paciente, Cidade).filter(ilike_op(Paciente.nome,f'%{nome}%')).join(Cidade, Paciente.cidade_id == Cidade.cidade_id).all()
     return render_template('pacientes.html', results=sql)
 
 #https://medium.com/@mhd0416/flask-sqlalchemy-object-to-json-84c515d3c11c
@@ -215,15 +245,14 @@ def pacientes_edit(paciente_id):
         sql = select(Paciente).where(Paciente.paciente_id == paciente_id)
         paciente = session.scalars(sql).one()
         return render_template('form_edit_paciente.html', cidades=cidades, paciente = paciente)
-    
-    #Abre a página de pacientes
+
+        #.join(Veiculo, Agendamento.veiculo_id == Veiculo.veiculo_id) \ , Veiculo, Motorista
+        #.join(Motorista, Agendamento.motorista_id ==  Motorista.motorista_id) \    
+#Abre a página de pacientes
 @app.route("/agendamentos")
-def agendamentos():
-    nome = request.args.get('nome', default = '', type = str)
-    #if nome == '':    
-    sql = session.query(Agendamento, Paciente ).join(Paciente, Agendamento.paciente_id == Paciente.paciente_id).all()        
-    #else:
-    #    sql = session.query(Paciente, Cidade).filter(ilike_op(Paciente.nome,f'%{nome}%')).join(Cidade, Paciente.cidade_id == Cidade.cidade_id).all()
+def agendamentos():  
+    sql = session.query(Agendamento, Paciente, Hospital, Veiculo, Motorista).order_by(Agendamento.agendamento_id.desc()).join(Paciente, Agendamento.paciente_id == Paciente.paciente_id).join(Hospital, Agendamento.hospital_id == Hospital.hospital_id).join(Veiculo, Agendamento.veiculo_id == Veiculo.veiculo_id).join(Motorista, Agendamento.motorista_id ==  Motorista.motorista_id).all()
+
     return render_template('agendamentos.html', results=sql)
 
 #Abre a página de agendamento de pacientes
@@ -250,9 +279,6 @@ def agendamentos_add():
         session.add(novoAgendamento)        
         session.commit()        
         return redirect(url_for('agendamentos'))    
-
-        #paciente_id, tipo_encaminhamento_id, tipo_doenca_id, tipo_remocao_id, hospital_id, veiculo_id, responsavel_pac, 
-        #usuario_id, motorista_id, estado_geral_paciente, data_remocao, saida_prevista, observacao, custo_IFD, custo_estadia
     
     else:
         tipo_encaminhamentos = session.query(Tipo_Encaminhamento).order_by(Tipo_Encaminhamento.nome).all()
@@ -266,7 +292,46 @@ def agendamentos_add():
         return render_template('form_cad_agendamento.html', tipo_encaminhamentos=tipo_encaminhamentos, 
                                tipo_doencas=tipo_doencas,tipo_remocoes=tipo_remocoes,veiculos=veiculos, 
                                motoristas=motoristas, usuarios=usuarios, pacientes=pacientes,
-                               hospitais = hospitais )
-    
-
+                               hospitais = hospitais)
 #https://bootstrap-table.com/
+
+#Abre a página de edição de agendamento
+@app.route('/agendamentos/editar/<agendamento_id>', methods=('GET', 'POST'))
+def agendamentos_edit(agendamento_id):
+    if request.method == 'POST':      
+        sql = select(Agendamento).where(Agendamento.agendamento_id == agendamento_id)
+        agendamento = session.scalars(sql).one()
+        agendamento.paciente_id = request.form['paciente_id']
+        agendamento.tipo_encaminhamento_id = request.form['encaminhamento']
+        agendamento.tipo_doenca_id = request.form['doenca']
+        agendamento.tipo_remocao_id = request.form['remocao']
+        agendamento.hospital_id = request.form['hospital_id']
+        agendamento.veiculo_id = request.form['veiculo']
+        agendamento.responsavel_pac = request.form['responsavel_pac'].upper()
+        agendamento.usuario_id = request.form['usuario_id']
+        agendamento.motorista_id = request.form['motorista']
+        agendamento.estado_geral_paciente = request.form['estado_geral_paciente'].upper()
+        agendamento.data_remocao = request.form['data_remocao']
+        agendamento.saida_prevista = request.form['saida_prevista']
+        agendamento.observacao = request.form['observacao'].upper()
+        agendamento.custo_IFD = request.form['custo_IFD']
+        agendamento.custo_estadia = request.form['custo_estadia']  
+        session.commit()
+        return redirect(url_for('agendamentos'))    
+    else:
+        #Carrega as informações dos combos e seletores
+        tipo_encaminhamentos = session.query(Tipo_Encaminhamento).order_by(Tipo_Encaminhamento.nome).all()
+        tipo_doencas = session.query(Tipo_Doenca).order_by(Tipo_Doenca.nome).all()
+        tipo_remocoes = session.query(Tipo_Remocao).order_by(Tipo_Remocao.nome).all()
+        veiculos = session.query(Veiculo).order_by(Veiculo.modelo).all()
+        motoristas = session.query(Motorista).order_by(Motorista.nome).all()
+        usuarios = session.query(Usuario).order_by(Usuario.primeiro_nome).all() 
+        pacientes = session.query(Paciente).order_by(Paciente.nome).all() 
+        hospitais = session.query(Hospital).order_by(Hospital.nome).all() 
+
+        sql = select(Agendamento).where(Agendamento.agendamento_id == agendamento_id)
+        agendamento = session.scalars(sql).one()
+        return render_template('form_edt_agendamento.html', tipo_encaminhamentos=tipo_encaminhamentos, 
+                               tipo_doencas=tipo_doencas,tipo_remocoes=tipo_remocoes,veiculos=veiculos, 
+                               motoristas=motoristas, usuarios=usuarios, pacientes=pacientes,
+                               hospitais = hospitais, agendamento = agendamento )

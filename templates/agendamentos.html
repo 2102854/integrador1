@@ -42,29 +42,31 @@
             <tr class="table-secondary">
                 <th scope="col" data-field="agendamento_id" class="col-1"><small></small>ID</th>
                 <th scope="col" data-field="nome" class="col-2"><small>NOME</small></th>
-                <th scope="col" data-field="dt_remocao" class="col-1"><small>DATA REMOÇÃO</small></th>
                 <th scope="col" data-field="hospital" class="col-1"><small>HOSPITAL</small></th>
                 <th scope="col" data-field="veiculo" class="col-1"><small>VEÍCULO</small></th>
+                <th scope="col" data-field="motorista" class="col-1"><small>MOTORISTA</small></th>
+                <th scope="col" data-field="dt_remocao" class="col-1"><small>DATA REMOÇÃO</small></th>                               
                 <th scope="col" data-field="dt_saida" class="col-1"><small>SAÍDA PREVISTA</small></th>
-                <th scope="col" class="col-2"></th>
+                <th scope="col" class="col-1"></th>
         </thead>
         <tbody>
             {% for result in results %}
             <tr id="tr-{{result.Agendamento.agendamento_id}}">
-                <td class="col-1 align-middle">{{ result.Agendamento.paciente_id }}</td>
-                <td class="col-2 align-middle">{{ result.Paciente.nome }}</td>
-                <td class="col-1 align-middle">{{ result.Agendamento.data_remocao }}</td>
-                <td class="col-1 align-middle">{{ result.Agendamento.hospital_id }}</td>
-                <td class="col-1 align-middle">{{ result.Agendamento.veiculo_id }}</td>   
-                <td class="col-1 align-middle">{{ result.Agendamento.saida_prevista }}</td>               
-                <td class="col-1 align-middle">
+                <td class="col-1">{{result.Agendamento.agendamento_id }}</td>
+                <td class="col-2">{{result.Paciente.nome}}</td>
+                <td class="col-1">{{result.Hospital.nome}}</td>
+                <td class="col-1">{{result.Veiculo.modelo}} - {{result.Veiculo.placa}}</td> 
+                <td class="col-1">{{result.Motorista.nome}}</td> 
+                <td class="col-1">{{ result.Agendamento.data_remocao | format_datetime }}</td>                  
+                <td class="col-1">{{ result.Agendamento.saida_prevista | format_datetime }}</td>               
+                <td class="col-1">
                     <div class="row buttons justify-content-end">
-                        <div class="col-2">
-                            <a class="btn btn-outline-primary" href="/pacientes/editar/{{result.Paciente.paciente_id}}">
+                        <div class="col-1">
+                            <a class="btn btn-outline-primary" href="/agendamentos/editar/{{result.Agendamento.agendamento_id}}">
                                 <i class="bi bi-brush"></i> 
                             </a>                            
                         </div>
-                        <div class="col-2"></div>                    
+                        <div class="col-6"></div>                    
                     </div>
                 </td>
             </tr>
